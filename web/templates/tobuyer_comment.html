@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>易书</title>
+    <!-- 包含头部信息用于适应不同设备 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 包含 bootstrap 样式表 -->
+    <link rel="stylesheet" href="https://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link href="/static/css/head.css" rel="stylesheet" type="text/css"/>
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/static/js/script2.js"></script>
+</head>
+<body>
+    <div id="white" style="opacity:0.9;"></div>
+
+    <nav class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="container-fluid"> 
+    <div class="navbar-header">
+        <a class="navbar-brand" href="/web/home">首页</a>
+    </div>
+    <div>
+        <ul class="nav navbar-nav">
+
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                   {{ nick }}<b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="/web/PCenter">个人中心</a></li>
+                    <li><a href="/web/login">退出登录</a></li>
+                </ul>
+            </li>
+
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    买家中心 <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="/web/buyer_center/?b=-1">已买到的宝贝</a></li>
+                    <li><a href="/web/favorites">收藏夹</a></li>
+                </ul>
+            </li>
+
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    卖家中心 <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="/web/upload">发布新的二手课本</a></li>
+                    <li><a href="/web/selling">已上架的课本</a></li>
+                    <li><a href="/web/seller_center">已卖出的课本</a></li>
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+    </div>
+</nav>
+
+<form method="post"enctype="multipart/form-data">
+  {% csrf_token %}
+<div class="container" style="text-align:left;margin-top:40px;">
+    <div class="row clearfix">
+        <div class="col-md-2 column">
+            <p style="font-size:18px;">买家：<a href="/web/others_center/?b={{ order.buyer_id }}"><b>{{ order.buyer_name }}</b></a></p>
+            <img class="l_img" src="{{ order.picture.url }}" style="width:80%">
+            <div style="font-size:15px;width:81%"><span id="bid_title">{{ order.bookname }}</span></div>
+        </br></br></br>
+        </div>
+        <div class="col-md-5 column">
+            <span>评价买家</span>
+            </br>
+            <textarea style="height:150px;width:420px;" name="comment"></textarea>
+            </br>
+
+        </div>
+        <div class="col-md-3 column" value="score">
+            </br>
+            <span>购物评分：</span>
+            </br>
+            <input type="radio" name="score" value="1" onclick="check(this.value)">
+            <input type="radio" name="score" value="2" onclick="check(this.value)">
+            <input type="radio" name="score" value="3" onclick="check(this.value)">
+            <input type="radio" name="score" value="4" onclick="check(this.value)">
+            <input type="radio" name="score" value="5" checked="true" onclick="check(this.value)">
+            <input type="text" id="answer" style="border:0px;background:none;width:6%; height:20px" value="5" disabled>
+            </br>
+            <span>发表形式：</span>
+            </br>
+            <input type="radio" name="anonymous" value="不匿名" onclick="check1(this.value)">
+            <input type="radio" name="anonymous" value="匿名" checked="true" onclick="check1(this.value)" style="margin-left:55px;">
+            <input type="text" id="answer1" style="border:0px;background:none;width:60%;height:20px" value="匿名" disabled>
+        </div>
+    </div>
+    <input type="submit" style="height:50px;width:200px;font-size:25px;margin-top:15px;margin-left:450px;"  value="提交评价">
+</div>
+</form>
+
+<script type="text/javascript">
+function check(browser)
+  {
+  document.getElementById("answer").value=browser
+  }
+
+function check1(browser)
+  {
+  document.getElementById("answer1").value=browser
+  }
+</script>
+
+</body>
+</html>

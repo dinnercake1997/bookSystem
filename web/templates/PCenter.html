@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>易书</title>
+    <!-- 包含头部信息用于适应不同设备 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 包含 bootstrap 样式表 -->
+    <link rel="stylesheet" href="https://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link href="/static/css/head.css" rel="stylesheet" type="text/css"/>
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    function imgPreview(fileDom){
+        //判断是否支持FileReader
+        if (window.FileReader) {
+            var reader = new FileReader();
+        } else {
+            alert("您的设备不支持图片预览功能，如需该功能请升级您的设备！");
+        }
+
+        //获取文件
+        var file = fileDom.files[0];
+        var imageType = /^image\//;
+        //是否是图片
+        if (!imageType.test(file.type)) {
+            alert("请选择图片！");
+            return;
+        }
+        //读取完成
+        reader.onload = function(e) {
+            //获取图片dom
+            var img = document.getElementById("head_img");
+            //图片路径设置为读取的图片
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+  </script>
+</head>
+<body>
+    <div id="white" style="opacity:0.9;"></div>
+
+    <nav class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="container-fluid"> 
+    <div class="navbar-header">
+        <a class="navbar-brand" href="/web/home">首页</a>
+    </div>
+    <div>
+        <ul class="nav navbar-nav">
+
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    {{ nick }} <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                        <li><a href="/web/PCenter">个人中心</a></li>
+                    <li><a href="/web/login">退出登录</a></li>
+                </ul>
+            </li>
+
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    买家中心 <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="/web/buyer_center/?b=-1">已买到的宝贝</a></li>
+                    <li><a href="/web/favorites">收藏夹</a></li>
+                </ul>
+            </li>
+
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    卖家中心 <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="/web/upload">发布新的二手课本</a></li>
+                    <li><a href="/web/selling">已上架的课本</a></li>
+                    <li><a href="/web/seller_center">已卖出的课本</a></li>
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+    </div>
+</nav>
+
+<div class="container" style="text-align:left;">
+    <form class="row clearfix" method="post" enctype="multipart/form-data" >
+    {% csrf_token %}
+    <div class="row clearfix">
+        <div class="col-md-1 column">
+            <img alt="头像" src='/static/img/media/{{img}}' width="72" height="72" name="head_img" id="head_img" class="head" style="margin-left:7px">
+            <input type="file" name="file" style="margin-left:7px;width:105%" onchange="imgPreview(this)" />
+        </div>
+        <div class="col-md-3 column" style="margin-top:10px;">
+            <input id="nick_name" name="nick_name" value="{{nick}}" style="border:0px;background:none;font-size:25px;width:70%"/>
+                        <input id="contact" name="contact" value="{{contact}}" style="border:0px;background:none;font-size:25px;width:70%"/>
+            <div style="font-size:15px;">{{campus}}</div>
+        </div>
+    </div>
+    <div class="row clearfix" style="margin-top:20px;">
+        <div class="col-md-12 column">
+            <ul id="myTab" class="nav nav-tabs" style="margin-bottom:20px;">
+                <li class="active"><a href="#info" data-toggle="tab">个人资料</a></li>
+                <li><a href="#evaluation" data-toggle="tab">收到的评价[{{ len2 }}]</a></li>
+            </ul>
+            <div id="myTabContent" class="tab-content">
+                <div class="tab-pane fade in active" id="info">
+                    <p><span><b>帐&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：</b></span><span>{{user}}</span></p>
+                    <p><span><b>学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;院：</b></span><span>{{college}}</span></p>
+                    <p><span><b>专&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;业：</b></span><span>{{major}}</span></p>
+                    <p><span><b>年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;级：</b></span><span>{{grade}}级</span></p>
+                    <p><span><b>个人简介：</b></span><textarea id="description" name="description" maxlength="180" style="border:0px;background:none;
+vertical-align:top;display:inline-block;width:200px; height:100px;">{{description}}</textarea></p>
+                    <input type="submit" value="保存" style="margin-left:225px">
+                </div>
+                <div class="tab-pane fade" id="evaluation">
+                    <div class="container" style="margin-top:40px;font-size:15px;">
+                        {%  for i in order_s %}
+                        <!-- 一条评论开始 -->
+                        <div class="row clearfix">
+                            <div class="col-md-1 column">
+                                <img src="/static/img/media/{{ i.buyer_image}}"width="72" height="72"class="little_head">
+                            </div>
+                            <div class="col-md-2 column">
+                                <span>{% if i.anonymous  %}匿名用户{% else %}{{ i.buyer_name }} {% endif %}</span>
+                            </div>
+                            <div class="col-md-5 column">
+                                <p>{{ i.comment }}</p>
+                                <p class="date">{{ i.c_time }}</p>
+                            </div>
+                            <div class="col-md-1 column">
+                                <span>评分：{{ i.score }}</span>
+                            </div>
+                            <div class="col-md-3 column">
+                                <span>来自华南理工大学的买家</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {%  for i in order_b %}
+                        <!-- 一条评论开始 -->
+                        <div class="row clearfix">
+                            <div class="col-md-1 column">
+                                <img src="/static/img/media/{{ i.seller_image}}" width="72" height="72"class="little_head">
+                            </div>
+                            <div class="col-md-2 column">
+                                <span>{% if i.anonymous  %}匿名用户{% else %}{{ i.seller_name }} {% endif %}</span>
+                            </div>
+                            <div class="col-md-5 column">
+                                <p>{{ i.tobuyer_comment }}</p>
+                                <p class="date">{{ i.tobuyer_c_time }}</p>
+                            </div>
+                            <div class="col-md-1 column">
+                                <span>评分：{{ i.tobuyer_score }}</span>
+                            </div>
+                            <div class="col-md-3 column">
+                                <span>来自华南理工大学的卖家</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <!-- 一条评论结束 -->
+                        <hr/>
+                        <hr/>
+                    </div>
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
+
+</body>
+</html>

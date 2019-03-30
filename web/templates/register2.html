@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>二手书</title>
+  <meta name="Author" content="Michael">
+  <meta name="Keywords" content="js/jQuery实现类似百度搜索功能">
+  <meta name="Description" content="js/jQuery实现类似百度搜索功能,可用键盘控制">
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+  <style type="text/css">
+    * {
+        margin: 0px;
+        padding: 0px;
+        font-size: 20px;
+    }
+
+    html {
+        background: url("bg.png") no-repeat center fixed;
+        -webkit-background-size: cover;
+        background-size: cover;
+    }
+    hr {
+    	border-color: rgba(255,0,255,0.2);
+    }
+    #info_wrap {
+        background: rgba(255, 255, 255, 0.8);
+        width: 95%;
+        display: block;
+        margin: 50px auto 50px;
+        position: relative;
+        border-radius: 0.5em;
+    }
+    #association_info_wrap {
+        text-align: center;
+        padding-bottom: 1em;
+    }
+
+    #association_img {
+        margin-left: 50%;
+        margin-bottom: -3em;
+        transform: translate(-50%, -50%);
+        display: block;
+        width: 40%;
+        border-radius: 1em;
+    }
+
+    #association_name {
+        font-size: 1.3em;
+        margin: 0.3em;
+    }
+    #collect_wrap {
+    	margin-top: 10px;
+    }
+    .collect_item {
+        width: 50%;
+        height: 40px;
+        line-height: 40px;
+        display: block;
+        float: left;
+        position: relative;
+    }
+
+    .collect_item p {
+        position: absolute;
+        font-size: 18px;
+        left: 8%;
+    }
+
+    .checked p:after {
+        content: '的'
+    }
+
+    #hint {
+        text-align: center;
+        padding: 20px 0px;
+    }
+
+    #about_us {}
+
+    #about_us #slogan {
+        text-align: center;
+        font-size: 18px;
+        line-height: 20px;
+        padding: 7px;
+        color: #fff;
+        text-shadow: 0px 0px 10px #f0f,0px 0px 20px #f0f
+    }
+
+    #about_us img {
+        width: 40%;
+        display: block;
+        margin: 10px auto;
+        border-radius: 20px;
+    }
+    #about_us #follow {
+        text-align: center;
+        font-size: 20px;
+        width: 60%;
+        margin: 0px auto 50px;
+        border-radius: 10px;
+        font-weight: 400;
+        padding: 10px 15px;
+        background: rgba(255,255,255,0.6);
+        display: block;
+    }
+    #title{
+        font-size: 38px;
+        margin-bottom: 8%;
+        color:#4c4c4c;
+    }
+    #lbg{
+        height:calc(100vh);
+        margin:0 auto;
+        width:540px;
+        text-align: center;
+        background: rgba(255,255,255,0.7);
+    }
+    .input {
+    border: 1.5pt solid;
+    width:82%;
+    font-size:15pt;
+    height: 54px;
+    margin:0 auto 20px auto;
+    padding-left: 30px;
+    background:rgba(0, 0, 0, 0);
+    color:#7b7b7b;
+    border-radius: 5pt;
+    text-align: left;
+    display: block;
+    border-color:#a4a4a4;
+  }
+  #submit_bt{
+    margin-top: 48px;
+    outline:none;
+    width:82%;
+    font-size: 20pt;
+    border-radius: 5pt;
+    color:#ffffff;
+    border:none;
+    background-color:#68493a;
+    padding:10px 188px 10px 188px;
+  }
+  #submit_bt:hover{
+    background-color:#533a2e;
+  }
+    </style>
+</head>
+
+<body >
+{% load static %}
+<h1 class="text-center" style="background-image: url({% static "img/1.jpg"%});"/h1>
+<form action="register" method="post">
+     {% csrf_token %}
+    <div id='lbg'>
+    </br></br></br>
+
+    <div id='title'>注册</div>
+
+用户id:<br>
+        <input type="text"; maxlength="20";style="outline:none;"name="username";value="username">
+       </br>
+
+        密码:<br>
+        <input type="password"; maxlength="20";style="outline:none;"name="password";value=" password">
+        <div style="text-align: right;padding-right:6%;">
+        </div>
+
+        昵称:<br>
+        <input type="text"; maxlength="20";style="outline:none;"name="nickname";value="nickname">
+       </br>
+
+        学院:<br>
+        <input type="text"; maxlength="20";style="outline:none;"name="college";value="college">
+       </br>
+
+        专业:<br>
+        <input type="text"; maxlength="20";style="outline:none;"name="major";value="major">
+       </br>
+        </br>
+       <div><span style="font-size:18px">年级</span>
+        <select name="grade" style="">
+            <option value="2014" selected="selected">2014</option>
+            <option value="2015">2015</option>
+            <option value="2016">2016</option>
+            <option value="2017">2017</option>
+        </select>
+    </div>
+         <div><span style="font-size:18px">校区</span>
+        <select name="campus" style="">
+            <option value="南校区" selected="selected">南校区</option>
+            <option value="北校区">北校区</option>
+        </select>
+    </div>
+<input onclick="submit_bt_onclick()" id="submit_bt" type="submit" value="注册" name="Button1">
+    <p style="margin-top:20px;">有账号了？
+        <a href="/web/login" style="color:#68493a;font-size:15pt;">登陆</a>
+    </p>
+
+    </div>
+
+</form>
+
+</body>
+
+</html>

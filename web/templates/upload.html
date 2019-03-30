@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>易书</title>
+    <!-- 包含头部信息用于适应不同设备 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 包含 bootstrap 样式表 -->
+    <link rel="stylesheet" href="https://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link href="head.css" rel="stylesheet" type="text/css"/>
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    function imgPreview(fileDom){
+        //判断是否支持FileReader
+        if (window.FileReader) {
+            var reader = new FileReader();
+        } else {
+            alert("您的设备不支持图片预览功能，如需该功能请升级您的设备！");
+        }
+        //获取文件
+        var file = fileDom.files[0];
+        var imageType = /^image\//;
+        //是否是图片
+        if (!imageType.test(file.type)) {
+            alert("请选择图片！");
+            return;
+        }
+        //读取完成
+        reader.onload = function(e) {
+            //获取图片dom
+            var img = document.getElementById("preview");
+            //图片路径设置为读取的图片
+            img.src = e.target.result;
+            img.style.display="block";
+        };
+        reader.readAsDataURL(file);
+    }
+</script>
+</head>
+<body>
+    <div id="white" style="opacity:0.9;"></div>
+
+    <nav class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="container-fluid"> 
+    <div class="navbar-header">
+        <a class="navbar-brand" href="/web/home">首页</a>
+    </div>
+    <div>
+        <ul class="nav navbar-nav">
+
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    {{ user }} <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="/web/PCenter">个人中心</a></li>
+                    <li><a href="/web/login">退出登录</a></li>
+                </ul>
+            </li>
+
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    买家中心 <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="/web/buyer_center/?b=-1">已买到的宝贝</a></li>
+                    <li><a href="/web/favorites">收藏夹</a></li>
+                </ul>
+            </li>
+
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    卖家中心 <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="/web/upload">发布新的二手课本</a></li>
+                    <li><a href="/web/selling">已上架的课本</a></li>
+                    <li><a href="/web/seller_center">已卖出的课本</a></li>
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+    </div>
+</nav>
+
+
+<div class="container" style="text-align:left;">
+    <h3><b>发布新的二手课本</b></h3>
+    <div class="row clearfix">
+        <form  method="post"enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="col-md-7 column">               
+                <div>
+                    <span style="font-size:18px">书&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名</span>
+                    <input type="text" name="b_name" style="margin-top:10px;margin-left:8px;"/>
+                </div>
+                <div>
+                    <span style="font-size:18px">作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;者</span>
+                    <input type="text" name="b_author" style="margin-top:10px;margin-left:8px;"/>
+                </div>
+                <div>
+                    <span style="font-size:18px;margin-left:-2px;">出&nbsp;&nbsp;版&nbsp;&nbsp;社</span>
+                    <input type="text" name="b_publisher" style="margin-top:10px;margin-left:8px;"/>
+                </div>
+                <div>
+                    <span style="font-size:18px">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</span>
+                    <input type="text" name="b_price" style="margin-top:10px;margin-left:8px;"/>
+                </div>
+                <div>
+                    <span style="font-size:18px">配送方式</span>
+                    <select name="b_way" id="create_new_send">
+                        <option value="1" selected="selected">面交</option>
+                        <option value="2">快递</option>
+                        <option value="3">面交或快递</option>
+                    </select>
+                </div>
+                <textarea id="create_new_des" onKeyup="getContent(this);" style="outline:none;"value="标题" onfocus="if(this.value=='描述一下二手书的细节){this.value=''}" onblur="if(this.value==''){this.value='描述一下二手书的细节'}"/>描述一下二手书的细节</textarea>
+                <!-- <input type="submit" style="margin-top:20px;" class="input_button" value="确认发布"> -->
+                <button type="submit" style="display:block;margin-top:20px;">确认发布</button>
+            </div>
+            <div class="col-md-5 column">
+                <div id="create_new_pic_div">
+                    <input type="file" name="b_img" onchange="imgPreview(this)" style="border:none;outline:none"/>
+                    <img alt="图片" style="display: none;" src="/static/img/logo_brown.png" name="head_img" id="preview"/>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

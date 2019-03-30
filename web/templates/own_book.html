@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>易书</title>
+    <!-- 包含头部信息用于适应不同设备 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 包含 bootstrap 样式表 -->
+    <link rel="stylesheet" href="https://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link href="/static/css/head.css" rel="stylesheet" type="text/css"/>
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    function if_buy(){
+        var t=confirm("你确定要拍下这件商品吗？")
+        if(t==true){
+            return "/web/buyer_center"
+        }
+        else {
+            return "#"
+        }
+    }
+    </script>
+</head>
+<body>
+    <div id="white" style="opacity:0.9;"></div>
+
+    <nav class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="container-fluid"> 
+    <div class="navbar-header">
+        <a class="navbar-brand" href="/web/home">首页</a>
+    </div>
+    <div>
+        <ul class="nav navbar-nav">
+
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    {{ user }} <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="/web/PCenter">个人中心</a></li>
+                    <li><a href="/web/login">退出登录</a></li>
+                </ul>
+            </li>
+
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    买家中心 <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="/web/buyer_center/?b=-1">已买到的宝贝</a></li>
+                    <li><a href="/web/favorites">收藏夹</a></li>
+                </ul>
+            </li>
+
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    卖家中心 <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="/web/upload">发布新的二手课本</a></li>
+                    <li><a href="/web/selling">已上架的课本</a></li>
+                    <li><a href="/web/seller_center">已卖出的课本</a></li>
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+    </div>
+</nav>
+
+
+<div class="container" style="text-align:left;margin-top:40px;">
+    {% for item in book  %}
+    <div class="row clearfix">
+        <div class="col-md-1 column"></div>
+        <div class="col-md-3 column">
+            <div style="border:#a4a4a4 1.5pt solid;padding:10px;">
+                <img id="bid_pic" src="{{item.picture.url}}" style="width:100%">
+            </div>
+            <div style="margin-top:15px;"><span style="top:4px;"></span></div>
+        </div>
+        <div class="col-md-6 column">
+            <div style="font-size:30px;"><b><span id="bid_title">{{ item.bookname }}</span></b></div>
+            <div style="font-size:20px;margin-top:15px;"><span>价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格：￥</span><span style="font-size:25px;color:#68493a" id="bid_price">{{ item.price }}</span></div>
+            <div style="font-size:20px;">配送方式：{{ item.get_way_display }}</div>
+            <div style="margin-top:20px;">作者：{{ item.author }}</div>
+            <div>出版社：{{ item.publisher }}</div>
+            <div style="margin-top:20px;"><b>商品介绍</b></div>
+            <div>{{ item.description }}</div>
+            <div style="text-align:right;margin-top:10px;"><button type="button" style="display:none" onclick="location.href=if_buy()">立即购买</button></div>
+        </div>
+        <div class="col-md-2 column" style="text-align:center;">
+            <div style="font-size:10px;">卖家：{{ item.seller.nickname }} </div>
+            <img id="gid_pic" src="{{ item.seller.image.url}}" style="width:50%;margin:15px 0;">
+            <div style="font-size:10px;">华南理工大学 南校</div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+</body>
+</html>

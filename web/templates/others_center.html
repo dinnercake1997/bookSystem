@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>易书</title>
+    <!-- 包含头部信息用于适应不同设备 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 包含 bootstrap 样式表 -->
+    <link rel="stylesheet" href="https://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link href="/static/css/head.css" rel="stylesheet" type="text/css"/>
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div id="white" style="opacity:0.9;"></div>
+
+    <nav class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="container-fluid"> 
+    <div class="navbar-header">
+        <a class="navbar-brand" href="/web/home">首页</a>
+    </div>
+    <div>
+        <ul class="nav navbar-nav">
+
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    {{ nick }} <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="/web/PCenter">个人中心</a></li>
+                    <li><a href="/web/login">退出登录</a></li>
+                </ul>
+            </li>
+
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    买家中心 <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="/web/buyer_center/?b=-1">已买到的宝贝</a></li>
+                    <li><a href="/web/favorites">收藏夹</a></li>
+                </ul>
+            </li>
+
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    卖家中心 <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="/web/upload">发布新的二手课本</a></li>
+                    <li><a href="/web/selling">已上架的课本</a></li>
+                    <li><a href="/web/seller_center">已卖出的课本</a></li>
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+    </div>
+</nav>
+
+<div class="container" style="text-align:left;">
+    <div class="row clearfix">
+        <div class="col-md-1 column">
+            <img src="{{ others.image.url }}" width="72" height="72" class="head">
+        </div>
+        <div class="col-md-3 column" style="margin-top:10px;">
+            <div style="font-size:25px;">{{ others.nickname }}</div>
+            <div style="font-size:15px;">华南理工大学{{ others.campus }}</div>
+        </div>
+    </div>
+    <div class="row clearfix" style="margin-top:20px;">
+        <div class="col-md-12 column">
+            <ul id="myTab" class="nav nav-tabs" style="margin-bottom:20px;">
+                <li><a href="#info" data-toggle="tab">个人资料</a></li>
+                <li class="active"><a href="#auction_list" data-toggle="tab">发布的商品[{{ book_len }}]</a></li>
+                <li><a href="#evaluation" data-toggle="tab">收到的评价[{{len }} ]</a></li>
+            </ul>
+            <div id="myTabContent" class="tab-content">
+                <div class="tab-pane fade" id="info">
+                    <p><span><b>学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;院：</b></span><span>{{ others.college }}</span></p>
+
+                    <p><span><b>专&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;业：</b></span><span>{{ others.major }}</span></p>
+                    <p><span><b>年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;级：</b></span><span>{{ others.in_year }}级</span></p>
+                                      <p><span><b>联系方式：</b></span><span>{{ others.contact }}</span></p>
+                    <p><span><b>个人简介：</b></span><span>{{ others.description }}</span></p>
+                </div>
+                <div class="tab-pane fade in active" id="auction_list">
+                    <div class="container">
+                        <div class="row clearfix" style="margin-bottom:20px;">
+                            <div class="col-md-8 column"></div>
+                            <div class="col-md-4 column">
+                                <form method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <input style="margin-top:12px;margin-left:20px;" name="search" id="search_store_block" onKeyup="getContent(this);" value="搜索TA发布的课本" onfocus="if(this.value=='搜索TA发布的课本'){this.value=''}" onblur="if(this.value==''){this.value='搜索TA发布的课本'}"/>
+                                    <input type="submit" class="btn btn-default" style="height:30px;margin-bottom:2px;"value="搜索">
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row clearfix">
+                            {% for item in book %}
+                            <div class="col-md-3 column">
+                                <div class="goods_container">
+                                    <div><a href="/web/book/?b={{ item.id }}"><img alt="40x40" width="60" height="60" src="{{ item.picture.url }}" class="goods_img"/></a></div>
+                                    <div style="text-align:left">
+                                        <span class="goods_price">¥{{ item.price }}</span>
+                                        <span class="goods_title"><a href="/web/book/?b={{ item.id }}">{{ item.bookname }}</a></span>
+                                        <span class="goods_pos">{{ item.get_way_display }}</span>
+
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="evaluation">
+                    <div class="container" style="margin-top:40px;font-size:15px;">
+                        {%  for i in order_s %}
+                        <!-- 一条评论开始 -->
+                        <div class="row clearfix">
+                            <div class="col-md-1 column">
+                                <img src="/static/img/media/{{ i.buyer_image}}" width="72" height="72" class="little_head">
+                            </div>
+                            <div class="col-md-2 column">
+                                <span>{% if i.anonymous  %}匿名用户{% else %}{{ i.buyer_name }} {% endif %}</span>
+                            </div>
+                            <div class="col-md-5 column">
+                                <p>{{ i.comment }}</p>
+                                <p class="date">{{ i.c_time }}</p>
+                            </div>
+                            <div class="col-md-1 column">
+                                <span>评分：{{ i.score }}</span>
+                            </div>
+                            <div class="col-md-3 column">
+                                <span>来自华南理工大学的买家</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {%  for i in order_b %}
+                        <!-- 一条评论开始 -->
+                        <div class="row clearfix">
+                            <div class="col-md-1 column">
+                                <img src="/static/img/media/{{ i.seller_image}}"width="72" height="72" class="little_head">
+                            </div>
+                            <div class="col-md-2 column">
+                                <span>{% if i.anonymous  %}匿名用户{% else %}{{ i.seller_name }} {% endif %}</span>
+                            </div>
+                            <div class="col-md-5 column">
+                                <p>{{ i.tobuyer_comment }}</p>
+                                <p class="date">{{ i.tobuyer_c_time }}</p>
+                            </div>
+                            <div class="col-md-1 column">
+                                <span>评分：{{ i.tobuyer_score }}</span>
+                            </div>
+                            <div class="col-md-3 column">
+                                <span>来自华南理工大学的卖家</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <!-- 一条评论结束 -->
+                        <hr/>
+
+
+                        <hr/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
